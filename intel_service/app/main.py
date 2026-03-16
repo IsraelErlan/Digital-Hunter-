@@ -22,7 +22,7 @@ def calculate_distance_and_level(target, last_target):
     return target
 
 
-def handle_target_error(target):
+def handle_target_error(target, msg_error):
     target['reason'] = msg_error
     publish_event(target)
 
@@ -37,7 +37,7 @@ def main():
             #add
             msg_error = validate_error(target)
             if msg_error: 
-                handle_target_error(target)
+                handle_target_error(target, msg_error)
                 continue
 
             last_target = find_target(target)
