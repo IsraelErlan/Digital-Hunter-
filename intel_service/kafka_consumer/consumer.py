@@ -1,18 +1,8 @@
 import json
-import os
-
-from confluent_kafka import Consumer
-
-BOOTSTRAP_SERVERS = os.getenv('BOOTSTRAP_SERVERS', 'localhost:9092')
-
-consumer_config = {
-    "bootstrap.servers": BOOTSTRAP_SERVERS,
-    "group.id": "intel",
-    "auto.offset.reset": "earliest"
-}
+from .connection import KafkaConsumer
 
 
-consumer = Consumer(consumer_config)
+consumer = KafkaConsumer.get_consumer()
 
 consumer.subscribe(["intel"])
 

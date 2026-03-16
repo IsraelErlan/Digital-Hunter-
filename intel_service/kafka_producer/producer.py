@@ -1,19 +1,14 @@
 import json
+from .connection import KafkaProducer
 
-from confluent_kafka import Producer
 
-producer_config = {
-    "bootstrap.servers": "localhost:9092"
-}
-
-producer = Producer(producer_config)
+producer = KafkaProducer.get_producer()
 
 def delivery_report(err, msg):
     if err:
         print(f"❌ Delivery failed: {err}")
     else:
         print(f"✅ Delivered {msg.value().decode('utf-8')}")
-        print(f"✅ Delivered to {msg.topic()} : partition {msg.partition()} : at offset {msg.offset()}")
 
 
 
