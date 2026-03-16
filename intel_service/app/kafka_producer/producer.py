@@ -16,7 +16,7 @@ def delivery_report(err, msg):
 def publish_event(msg):
     value = json.dumps(msg).encode("utf-8")
     producer.produce(
-    topic="orders",
+    topic="intel_signals_dlq",
     value=value,
     callback=delivery_report
                             )
