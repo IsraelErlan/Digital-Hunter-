@@ -1,19 +1,54 @@
-from consuner.consumer import get_msg
-from logic.validation import validate_error
-from producer.producer import publish_event
+from kafka_consumer.consumer import get_intel_msg
+from validation.validation import validate_error
+from kafka_producer.producer import publish_event
+from db.dal import save_target_to_mongo, find_target
+from logic.haversine import haversine_km
+
+
+# 
+def calculate_distance_and_level(target, last_target):
+    if not last_target:
+            target['priority_level'] = 99
+            target['movement_distance'] = 0
+
+    else:
+        lat1, lon1 = target['lat'], target['lon']
+        lat2, lon2 = last_target['lat'], last_target['lon']
+        target['movement_distance'] = haversine_km(lat1, lon1, lat2, lon2)
+
+    return target
+
+
+def handle_target_error(target):
+    target['reason'] = msg_error
+    publish_event(target)
+
 
 def main():
     while True:
+        try:
+            target = get_intel_msg()
+            if not target: 
+                continue 
 
-        msg = get_msg()
-        if not msg: 
-            continue 
+            #add
+            msg_error = validate_error(target)
+            if msg_error: 
+                handle_target_error(target)
+                continue
 
-        #add
-        msg_error = validate_error(msg)
+            last_target = find_target(target)
+            
+            target = calculate_distance_and_level(target, last_target)
 
-        if msg_error: 
-            msg['reason'] = msg_error
+            save_target_to_mongo(target)
+
+        except Exception as e:
+             print(str(e))
+
+if __name__ == '__main__':
+     main()
+
 
 
 

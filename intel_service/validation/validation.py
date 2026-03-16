@@ -1,6 +1,6 @@
 from pydantic import BaseModel, ValidationError
 from datetime import datetime, timezone
-from ...shared.logger import log_event
+# from ...shared.logger import log_event
 
 
 class Intel(BaseModel):
@@ -19,7 +19,7 @@ def validate_error(msg_intel: dict)-> None | str:
         Intel(**msg_intel)
         return None
     except ValidationError as e: 
-        log_event(level="error", message=str(e))
+        # log_event(level="error", message=str(e))
         return str(e)
 
 

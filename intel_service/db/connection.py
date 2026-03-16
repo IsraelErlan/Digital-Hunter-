@@ -3,11 +3,21 @@ import os
 
 MONGO_URI = os.getenv('MONGO_URI', "mongodb://localhost:27017/")
 
-myclient = pymongo.MongoClient(MONGO_URI)
+class Mongo:
+    connection = None
+    collection = None
 
-mydb = myclient["Digital Hunter"]
+    @classmethod
+    def get_connection(cls):
+        if cls.connection is None:
+            cls.connection = pymongo.MongoClient(MONGO_URI)
+        return cls.connection
+    
+    @classmethod
+    def get_collection(cls):
+        if cls.collection is None:
+            connection = cls.get_connection()
+            db = connection["Digital_Hunter"]
+            cls.collection = db["target_bank"]
+        return cls.collection
 
-mycol = mydb["target bank"]
-
-def get_collection():
-    return mycol
