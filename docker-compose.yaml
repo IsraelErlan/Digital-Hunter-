@@ -25,21 +25,41 @@ services:
     volumes:
       - kafka_kraft:/var/lib/kafka/data
 
-  mongo:
+  mongodb:
     image: mongo
     ports: 
     - "27017:27017"
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: password
+    volumes:
+      - mongo_data:/data/db
 
   intel:
-    build: intel_service/.
+    build: intel_service
     env_file:
       - env
     depends_on:
       - kafka
+      - mongodb
+
+  
+  attack: 
+    build: attack_service
+    env_file:
+      - env
+    depends_on:
+      - kafka
+      - mongodb
+
+
+  damage: 
+    build: damage_service 
+    env_file:
+      - env 
+    depends_on:
+      - kafka
+      - mongodb
+
 
 volumes:
   kafka_kraft:
+  mongo_data:
 
