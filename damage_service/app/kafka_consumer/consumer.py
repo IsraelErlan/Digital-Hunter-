@@ -4,11 +4,11 @@ from .connection import KafkaConsumer
 
 consumer = KafkaConsumer.get_consumer()
 
-consumer.subscribe(["intel"])
+consumer.subscribe(["damage"])
 
-print("🟢 Consumer is running and subscribed to intel topic")
+print("🟢 Consumer is running and subscribed to damage topic")
 
-def get_intel_msg()-> dict | None:
+def get_damage()-> dict | None:
     try:
         msg = consumer.poll(1.0)
         if msg is None:
@@ -18,8 +18,8 @@ def get_intel_msg()-> dict | None:
             return None
 
         value = msg.value().decode("utf-8")
-        intel_msg = json.loads(value)
-        return intel_msg
+        damage = json.loads(value)
+        return damage
     except KeyboardInterrupt:
         print("\n🔴 Stopping consumer")
 

@@ -6,7 +6,7 @@ consumer = KafkaConsumer.get_consumer()
 
 consumer.subscribe(["attack"])
 
-print("🟢 Consumer is running and subscribed to orders topic")
+print("🟢 Consumer is running and subscribed to attack topic")
 
 def get_attack()-> dict | None:
     try:
