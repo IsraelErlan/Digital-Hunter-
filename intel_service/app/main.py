@@ -16,10 +16,9 @@ def calculate_distance_and_level(target, last_target):
         lat1, lon1 = target['lat'], target['lon']
         lat2, lon2 = last_target['lat'], last_target['lon']
         target['movement_distance'] = haversine_km(lat1, lon1, lat2, lon2)
-        
+        save_target_to_mongo(target)
 
-
-    return target
+    
 
 
 def handle_target_error(target, msg_error):

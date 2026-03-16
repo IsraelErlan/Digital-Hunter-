@@ -1,5 +1,7 @@
 from kafka_consumer.consumer import get_attack
 from db.dal import update_target
+from logger import log_event
+
 
 
 def main():
